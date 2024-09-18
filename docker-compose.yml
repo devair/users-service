@@ -1,0 +1,43 @@
+services:
+  users-db:
+    image: postgres
+    container_name: users-db
+    restart: always
+    ports:
+      - 5432:5432
+    environment: 
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=users_db
+    volumes:
+      - pgdata:/data/postgres
+  users-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile          
+    container_name: users-app    
+    ports:
+      - 3333:3333
+      - 9229:9229 #porta para debug
+    volumes:
+      - ./src:/usr/src/app/src 
+      - /usr/src/app/node_modules
+
+    environment:
+      - APP_PORT=3333
+      - DB_DATABASE=users_db
+      - DB_USER=docker
+      - DB_PASS=docker
+      - DB_HOST=users-db
+      - DB_PORT=5432     
+      - RABBITMQ_URL=amqp://localhost
+    links:
+      - users-db
+
+    depends_on:
+      - users-db  
+
+volumes:
+  pgdata:
+    driver: local
+    
