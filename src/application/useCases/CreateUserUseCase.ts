@@ -41,7 +41,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
             
             // Doctor message
             if (userCreated.role == UserRole.DOCTOR) {
-                const doctorMessage = { name: userCreated.name, userCreated: user.email, crm: user.crm }
+                const doctorMessage = { name: userCreated.name, email: user.email, crm: user.crm }
                 await this.doctorQueueOut.publish(QueueNames.DOCTOR_REGISTRATION, JSON.stringify(doctorMessage))
             }
 
