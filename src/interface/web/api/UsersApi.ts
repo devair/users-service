@@ -28,7 +28,7 @@ export class UsersApi {
     }
 
     async login(req: Request, res: Response):Promise<Response>{
-        const { email, password } = req.body;
+        const { email, password } = req.body
         const loginUseCase = new LoginUseCase(this.dataSource)
         const loginController = new LoginController(loginUseCase)
 

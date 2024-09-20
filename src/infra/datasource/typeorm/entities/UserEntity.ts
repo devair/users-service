@@ -1,5 +1,5 @@
-import { EntitySchema } from "typeorm";
-import { BaseColumnSchemaPart } from "./BaseColumnSchemaPart ";
+import { EntitySchema } from "typeorm"
+import { BaseColumnSchemaPart } from "./BaseColumnSchemaPart "
 import { User } from "../../../../core/entities/User"
 
 

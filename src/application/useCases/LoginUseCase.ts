@@ -11,7 +11,7 @@ export class LoginUseCase implements ILoginUseCase{
     private userRepository: IUserRepository
 
     //TODO ver onde colocar isso
-    static JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
+    static JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey'
 
     constructor(
         private dataSource: DataSource
@@ -25,14 +25,14 @@ export class LoginUseCase implements ILoginUseCase{
             throw new Error(`User not found`)
         }
 
-        const isMatch = await bcrypt.compare(password, userFound.password);
+        const isMatch = await bcrypt.compare(password, userFound.password)
 
         if (!isMatch) {
             throw new Error(`Invalid Email or Password`)
         }
 
         // Gerar o token JWT
-        const token = jwt.sign({ email: userFound.email, role: userFound.role, id: userFound.id }, LoginUseCase.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email: userFound.email, role: userFound.role, id: userFound.id }, LoginUseCase.JWT_SECRET, { expiresIn: '1h' })
 
         return token
     }
