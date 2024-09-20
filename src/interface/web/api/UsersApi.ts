@@ -34,7 +34,7 @@ export class UsersApi {
 
         try {
             const data = await loginController.handler(email, password)
-            res.contentType('application/json')
+            res.contentType('text/plain')
             return res.status(200).send(data)
         }
         catch (ex) {
