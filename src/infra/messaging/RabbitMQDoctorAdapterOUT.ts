@@ -1,7 +1,7 @@
 import amqplib from "amqplib"
-import { IDoctorQueueAdapterOUT } from "../../core/messaging/IDoctorQueueAdapterOUT"
+import { IUserQueueAdapterOUT } from "../../core/messaging/IUserQueueAdapterOUT"
 
-export default class  RabbitMQDoctorAdapterOUT implements IDoctorQueueAdapterOUT{
+export default class  RabbitMQDoctorAdapterOUT implements IUserQueueAdapterOUT{
     
     private connection! : amqplib.Connection
     private channel!: amqplib.ConfirmChannel

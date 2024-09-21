@@ -6,7 +6,7 @@ import { InputCreatedUserDto, OutputCreatedUserDto } from "../../core/usesCase/d
 import * as bcrypt from 'bcrypt'
 import { UsersRepositoryPostgres } from "../../infra/datasource/typeorm/postgres/UsersRepositoryPostgres"
 import { UserEntity } from "../../infra/datasource/typeorm/entities/UserEntity"
-import { IDoctorQueueAdapterOUT } from "../../core/messaging/IDoctorQueueAdapterOUT"
+import { IUserQueueAdapterOUT } from "../../core/messaging/IUserQueueAdapterOUT"
 import { QueueNames } from "../../core/messaging/QueueNames"
 
 export class CreateUserUseCase implements ICreateUserUseCase {
@@ -15,7 +15,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
     constructor(
         private dataSource: DataSource,
-        private doctorQueueOut: IDoctorQueueAdapterOUT
+        private userQueueOut: IUserQueueAdapterOUT
     ) {
         this.userRepository = new UsersRepositoryPostgres(this.dataSource.getRepository(UserEntity))
     }
@@ -42,7 +42,13 @@ export class CreateUserUseCase implements ICreateUserUseCase {
             // Doctor message
             if (userCreated.role == UserRole.DOCTOR) {
                 const doctorMessage = { name: userCreated.name, email: user.email, crm: user.crm }
-                await this.doctorQueueOut.publish(QueueNames.DOCTOR_REGISTRATION, JSON.stringify(doctorMessage))
+                await this.userQueueOut.publish(QueueNames.DOCTOR_REGISTRATION, JSON.stringify(doctorMessage))
+            }
+
+            // Patient message
+            if (userCreated.role == UserRole.PATIENT) {
+                const patientMessage = { name: userCreated.name, email: user.email, cpf: user.cpf }
+                await this.userQueueOut.publish(QueueNames.PATIENT_REGISTRATION, JSON.stringify(patientMessage))
             }
 
             // Confirma a transação

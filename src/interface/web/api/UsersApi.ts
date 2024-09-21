@@ -4,12 +4,12 @@ import { CreateUserUseCase } from "../../../application/useCases/CreateUserUseCa
 import { CreateUserController } from "../../../communication/controller/CreateUserController"
 import { LoginUseCase } from '../../../application/useCases/LoginUseCase'
 import { LoginController } from '../../../communication/controller/LoginController'
-import { IDoctorQueueAdapterOUT } from '../../../core/messaging/IDoctorQueueAdapterOUT'
+import { IUserQueueAdapterOUT } from '../../../core/messaging/IUserQueueAdapterOUT'
 
 export class UsersApi {
     constructor(
         private readonly dataSource: DataSource,
-        private publisher: IDoctorQueueAdapterOUT
+        private publisher: IUserQueueAdapterOUT
     ) { }
 
     async create(req: Request, resp: Response): Promise<Response> {

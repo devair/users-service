@@ -2,9 +2,9 @@ import { Router } from "express"
 import { DataSource } from "typeorm"
 import { UsersApi } from "../api/UsersApi"
 import { usersRouter } from "./users.router"
-import { IDoctorQueueAdapterOUT } from "../../../core/messaging/IDoctorQueueAdapterOUT"
+import { IUserQueueAdapterOUT } from "../../../core/messaging/IUserQueueAdapterOUT"
 
-export const router = (dataSource: DataSource, publisher: IDoctorQueueAdapterOUT) => {
+export const router = (dataSource: DataSource, publisher: IUserQueueAdapterOUT) => {
         
     const router = Router()
 
