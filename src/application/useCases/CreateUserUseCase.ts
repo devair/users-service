@@ -17,7 +17,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
         private dataSource: DataSource,
         private userQueueOut: IUserQueueAdapterOUT
     ) {
-        this.userRepository = new UsersRepositoryPostgres(this.dataSource.getRepository(UserEntity))
+        
     }
 
     async execute(userInput: InputCreatedUserDto): Promise<OutputCreatedUserDto> {
@@ -27,17 +27,18 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
         const user = new User(name, cpf, email, hashedPassword, role, crm)
 
-        const userFound = await this.userRepository.findByCpf(cpf) || await this.userRepository.findByEmail(email)
-        if (userFound) {
-            throw new Error(`User already exists with these parameters: cpf or email`)
-        }
-
         const queryRunner = this.dataSource.createQueryRunner()
         await queryRunner.startTransaction()    
-        const repoTransaction = queryRunner.manager.getRepository(UserEntity)
+        //const repoTransaction = queryRunner.manager.getRepository(UserEntity)
+        this.userRepository = new UsersRepositoryPostgres(queryRunner.manager.getRepository(UserEntity))
 
         try {
-            const userCreated = await repoTransaction.save(user)
+            const userFound = await this.userRepository.findByCpf(cpf) || await this.userRepository.findByEmail(email)
+            if (userFound) {
+                throw new Error(`User already exists with these parameters: cpf or email`)
+            }
+        
+            const userCreated = await this.userRepository.create(user)
             
             // Doctor message
             if (userCreated.role == UserRole.DOCTOR) {

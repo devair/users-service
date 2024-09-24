@@ -12,12 +12,7 @@ export class UsersRepositoryPostgres implements IUserRepository {
         const newUser = this.repository.create(user)
         const userCreated = await this.repository.save(newUser)
         return userCreated
-    }
-
-    async list(): Promise<User[]> {
-        const all = await this.repository.find()
-        return all
-    }
+    }    
 
     async findByEmail(email: string): Promise<User> {
         const user = this.repository.findOne({ where: { email } })

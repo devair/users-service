@@ -29,7 +29,8 @@ export const UserEntity = new EntitySchema<User>({
         },
         crm: {
             type: 'varchar',
-            unique: false
+            unique: false,
+            nullable: true
         },
     },    
 })
